@@ -1,8 +1,14 @@
 package com.epam.university.java.project.core.cdi.context;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Demo bean. This bean assumed as parent.
  */
+@XmlRootElement(name = "parentBean")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ParentBean implements ParentBeanInterface {
     private String property1;
     private int property2;
