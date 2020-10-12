@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Demo bean. This bean assumed as parent.
  */
-@XmlRootElement(name = "parentBean")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ParentBean implements ParentBeanInterface {
     private String property1;
     private int property2;
