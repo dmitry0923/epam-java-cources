@@ -17,6 +17,9 @@ public class ApplicationContextImpl implements ApplicationContext {
     private BeanDefinitionReader beanDefinitionReader;
     private BeanFactory beanFactory;
 
+    /**
+     * Java doc.
+     */
     public ApplicationContextImpl() {
         beanDefinitionRegistry = new BeanDefinitionRegistryImpl();
         beanDefinitionReader = new BeanDefinitionReaderImpl(beanDefinitionRegistry);

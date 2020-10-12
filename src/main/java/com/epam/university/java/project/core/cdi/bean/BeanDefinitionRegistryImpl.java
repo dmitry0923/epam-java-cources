@@ -16,8 +16,8 @@ public class BeanDefinitionRegistryImpl implements BeanDefinitionRegistry {
 
     @Override
     public void addBeanDefinition(BeanDefinition definition) {
-       registry.put(definition.getId().toLowerCase(), definition);
-       registry.put(definition.getClassName().toLowerCase(), definition);
+        registry.put(definition.getId().toLowerCase(), definition);
+        registry.put(definition.getClassName().toLowerCase(), definition);
 
 
         try {
