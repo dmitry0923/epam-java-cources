@@ -51,6 +51,7 @@ public class BeanFactoryImpl implements BeanFactory {
         }
 
         Predicate<String> isNullOrBlank = x -> x == null || x.isBlank();
+
         if (definition.getProperties() != null) {
             if (definition.getProperties().stream()
                     .anyMatch(n -> isNullOrBlank.test(n.getValue())
@@ -66,7 +67,7 @@ public class BeanFactoryImpl implements BeanFactory {
             Class<T> clazz = (Class<T>) Class.forName(definition.getClassName());
             if (definition.getScope() == null
                     && definition.getProperties() != null
-                    && definition.getProperties().size() < 2) { // here
+                    && definition.getProperties().size() <= 2) { // here
                 instance = clazz.getDeclaredConstructor().newInstance();
                 return instance;
             }

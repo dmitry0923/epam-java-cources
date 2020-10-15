@@ -21,7 +21,6 @@ public class BeanDefinitionReaderImpl implements BeanDefinitionReader {
     public int loadBeanDefinitions(Resource resource) {
         int numberOfLoadedBeans = 0;
         try {
-            // берем только корневой класс куда входят все остальные зависимости
             JAXBContext jc = JAXBContext.newInstance(BeansRoot.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             BeansRoot beans = (BeansRoot) unmarshaller.unmarshal(resource.getFile());
