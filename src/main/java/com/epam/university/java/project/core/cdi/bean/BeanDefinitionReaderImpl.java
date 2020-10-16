@@ -7,9 +7,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-/**
- * Author Dmitry Novikov 08-Oct-20.
- */
 public class BeanDefinitionReaderImpl implements BeanDefinitionReader {
     private final BeanDefinitionRegistry beanDefinitionRegistry;
 
@@ -30,8 +27,8 @@ public class BeanDefinitionReaderImpl implements BeanDefinitionReader {
                 throw new RuntimeException();
             }
 
-            for (BeanDefinition bdf: beanDefinitionList
-                 ) {
+            for (BeanDefinition bdf : beanDefinitionList
+            ) {
                 beanDefinitionRegistry.addBeanDefinition(bdf);
                 numberOfLoadedBeans++;
             }
@@ -48,8 +45,8 @@ public class BeanDefinitionReaderImpl implements BeanDefinitionReader {
     @Override
     public int loadBeanDefinitions(Collection<Resource> resources) {
         int numberOfLoadedBeanDefinitions = 0;
-        for (Resource resource: resources
-             ) {
+        for (Resource resource : resources
+        ) {
             numberOfLoadedBeanDefinitions += loadBeanDefinitions(resource);
         }
         return numberOfLoadedBeanDefinitions;

@@ -59,8 +59,8 @@ public interface Book extends StatefulEntity<BookStatus, BookEvent> {
 
     /**
      * Get return date for issued book.
+     * @param returnDate returnDate
      * @return return date
-     * @param returnDate
      */
     LocalDate getReturnDate(LocalDate returnDate);
 

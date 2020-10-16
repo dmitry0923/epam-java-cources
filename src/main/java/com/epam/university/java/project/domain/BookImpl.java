@@ -3,24 +3,15 @@ package com.epam.university.java.project.domain;
 import com.epam.university.java.project.core.state.machine.domain.StateMachineDefinition;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Random;
 
-/**
- * Author Dmitry Novikov 12-Oct-20.
- */
 public class BookImpl implements Book {
-    private Random random = new Random();
     private int id;
     private String title;
     private Collection<String> authors;
     private String serialNumber;
-    private LocalDate localDate;
-    private BookStatus bookStatus;
-    private StateMachineDefinition<BookStatus, BookEvent> stateMachineDefinition;
-
-    public BookImpl() {
-        id = random.nextInt(1000) + random.nextInt(1000);
-    }
+    private LocalDate returnDate;
+    private BookStatus state;
+    private StateMachineDefinition<BookStatus, BookEvent> definition;
 
     @Override
     public int getId() {
@@ -64,31 +55,32 @@ public class BookImpl implements Book {
 
     @Override
     public LocalDate getReturnDate(LocalDate returnDate) {
-        return localDate;
+        return null;
     }
 
     @Override
     public void setReturnDate(LocalDate date) {
-        this.localDate = date;
+        this.returnDate = date;
     }
 
     @Override
     public BookStatus getState() {
-        return bookStatus;
+        return state;
     }
 
     @Override
     public void setState(BookStatus bookStatus) {
-        this.bookStatus = bookStatus;
+        this.state = bookStatus;
     }
 
     @Override
     public StateMachineDefinition<BookStatus, BookEvent> getStateMachineDefinition() {
-        return stateMachineDefinition;
+        return definition;
     }
 
     @Override
-    public void setStateMachineDefinition(StateMachineDefinition<BookStatus, BookEvent> definition) {
-        this.stateMachineDefinition = definition;
+    public void setStateMachineDefinition(StateMachineDefinition<BookStatus,
+            BookEvent> definition) {
+        this.definition = definition;
     }
 }

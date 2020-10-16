@@ -1,35 +1,41 @@
 package com.epam.university.java.project.core.state.machine.domain;
 
-/**
- * Author Dmitry Novikov 13-Oct-20.
- */
-public class StateMachineDefinitionBuilderImpl<STATE, EVENT> implements StateMachineDefinitionBuilder<STATE, EVENT> {
-    private StateMachineDefinition<STATE, EVENT> stateMachineDefinition;
+import com.epam.university.java.project.domain.BookEvent;
+import com.epam.university.java.project.domain.BookStatus;
+
+public class StateMachineDefinitionBuilderImpl
+        implements StateMachineDefinitionBuilder<BookStatus, BookEvent> {
+    private final StateMachineDefinition<BookStatus, BookEvent> definition
+            = new StateMachineDefinitionImpl();
 
     @Override
-    public StateMachineDefinition<STATE, EVENT> build() {
-        stateMachineDefinition = new StateMachineDefinitionImpl<>();
-        return stateMachineDefinition;
+    public StateMachineDefinition<BookStatus, BookEvent> build() {
+        return definition;
     }
 
     @Override
-    public StateMachineDefinitionBuilder<STATE, EVENT> addState(STATE from,
-                                                                STATE to, EVENT on, String method) {
-        StateMachineState stateMachineState = new StateMachineStateImpl();
-        stateMachineState.setFrom(from);
-        stateMachineState.setTo(to);
-        stateMachineState.setMethodToCall(method);
-        stateMachineDefinition.addState(stateMachineState);
+    public StateMachineDefinitionBuilder<BookStatus, BookEvent> addState(BookStatus from,
+                                                                         BookStatus to,
+                                                                         BookEvent on,
+                                                                         String method) {
+        StateMachineState<BookStatus, BookEvent> state = new StateMachineStateImpl();
+        state.setFrom(from);
+        state.setTo(to);
+        state.setOn(on);
+        state.setMethodToCall(method);
+        definition.addState(state);
         return this;
     }
 
     @Override
-    public StateMachineDefinitionBuilder<STATE, EVENT> addState(STATE from,
-                                                                STATE to, EVENT on) {
-        StateMachineState stateMachineState = new StateMachineStateImpl();
-        stateMachineState.setFrom(from);
-        stateMachineState.setTo(to);
-        stateMachineDefinition.addState(stateMachineState);
+    public StateMachineDefinitionBuilder<BookStatus, BookEvent> addState(BookStatus from,
+                                                                         BookStatus to,
+                                                                         BookEvent on) {
+        StateMachineState<BookStatus, BookEvent> state = new StateMachineStateImpl();
+        state.setFrom(from);
+        state.setTo(to);
+        state.setOn(on);
+        definition.addState(state);
         return this;
     }
 }

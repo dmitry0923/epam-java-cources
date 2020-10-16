@@ -18,6 +18,7 @@ public class BeanFactoryImpl implements BeanFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> beanClass) {
         return (T) getBean(beanClass.getName());
     }
@@ -28,6 +29,7 @@ public class BeanFactoryImpl implements BeanFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getBean(String beanName, Class<T> beanClass) {
         return (T) getBean(beanName);
     }
@@ -35,12 +37,12 @@ public class BeanFactoryImpl implements BeanFactory {
     /**
      * Java doc.
      */
+    @SuppressWarnings("unchecked")
     public <T> T getBean(BeanDefinition definition) {
-        // if properties = null and scope is prototype
         if (definition.getProperties() == null
                 && definition.getScope() != null && definition.getScope().equals("prototype")) {
-            T instance = null;
-            Class<T> clazz = null;
+            T instance;
+            Class<T> clazz;
             try {
                 clazz = (Class<T>) Class.forName(definition.getClassName());
                 instance = clazz.getDeclaredConstructor().newInstance();
@@ -66,18 +68,18 @@ public class BeanFactoryImpl implements BeanFactory {
             T instance;
             Class<T> clazz = (Class<T>) Class.forName(definition.getClassName());
             if (definition.getScope() == null
-                    && definition.getProperties() != null
-                    && definition.getProperties().size() <= 2) { // here
+                    && definition.getProperties() == null
+                    && definition.getPostConstruct() == null) {
                 instance = clazz.getDeclaredConstructor().newInstance();
                 return instance;
             }
+
             if (definition.getScope() != null && definition.getScope().equals("singleton")
                     && singletons.containsKey(definition)) {
                 instance = (T) singletons.get(definition);
                 return instance;
             } else {
                 instance = clazz.getDeclaredConstructor().newInstance();
-                // here
                 if (definition.getProperties() == null
                         && definition.getScope() == null
                         && definition.getPostConstruct() == null
@@ -87,6 +89,10 @@ public class BeanFactoryImpl implements BeanFactory {
                 if (definition.getScope() != null && definition.getScope().equals("singleton")) {
                     singletons.put(definition, instance);
                 }
+            }
+
+            if (definition.getProperties() == null) {
+                return instance;
             }
 
             for (BeanPropertyDefinition property : definition.getProperties()) {

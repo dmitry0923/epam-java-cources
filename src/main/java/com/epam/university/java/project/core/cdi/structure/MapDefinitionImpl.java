@@ -6,9 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collection;
 
-/**
- * Author Dmitry Novikov 11-Oct-20.
- */
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MapDefinitionImpl implements MapDefinition {

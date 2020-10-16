@@ -10,30 +10,29 @@ import com.epam.university.java.project.domain.BookStatus;
 import java.time.LocalDate;
 import java.util.Collection;
 
-/**
- * Author Dmitry Novikov 12-Oct-20.
- */
 public class BookServiceImpl implements BookService {
     private BookDao bookDao;
     private StateMachineManager stateMachineManager;
-    private StateMachineDefinition<BookStatus, BookEvent> stateMachineDefinition;
-    private final Resource defaultBookStateMachineDefinitionXml;
-    private String contextPath;
+    private final Resource stateMachineDefinitionXml;
 
+    /**
+     * Java doc.
+     */
     public BookServiceImpl() {
-        contextPath = getClass()
-                .getResource("/project/DefaultBookStateMachineDefinition.xml")
-                .getFile();
-        defaultBookStateMachineDefinitionXml = new XmlResource(contextPath);
-        stateMachineDefinition = (StateMachineDefinition<BookStatus, BookEvent>) stateMachineManager
-                .loadDefinition(defaultBookStateMachineDefinitionXml);
-        bookDao = new BookDaoXmlImpl();
+        stateMachineDefinitionXml =
+                new XmlResource(getClass()
+                        .getResource("/project/DefaultBookStateMachineDefinition.xml")
+                        .getFile());
     }
 
     @Override
     public Book createBook() {
+        @SuppressWarnings("unchecked")
+        StateMachineDefinition<BookStatus, BookEvent> definition
+                = (StateMachineDefinition<BookStatus, BookEvent>)
+                stateMachineManager.loadDefinition(stateMachineDefinitionXml);
         Book book = bookDao.createBook();
-        stateMachineManager.handleEvent(stateMachineManager.initStateMachine(book, stateMachineDefinition),
+        stateMachineManager.handleEvent(stateMachineManager.initStateMachine(book, definition),
                 BookEvent.CREATE);
         return book;
     }

@@ -1,16 +1,8 @@
 package com.epam.university.java.project.core.cdi.bean;
 
-import java.beans.BeanProperty;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-/**
- * Author Dmitry Novikov 08-Oct-20.
- */
 public class BeanDefinitionRegistryImpl implements BeanDefinitionRegistry {
     private final Map<String, BeanDefinition> registry = new HashMap<>();
 

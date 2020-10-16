@@ -3,7 +3,6 @@ package com.epam.university.java.project.core.state.machine.domain;
 import com.epam.university.java.project.domain.BookEvent;
 import com.epam.university.java.project.domain.BookStatus;
 import java.util.Collection;
-import java.util.LinkedList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -11,9 +10,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/**
- * Author Dmitry Novikov 13-Oct-20.
- */
 @XmlRootElement(name = "definition")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StateMachineDefinitionImpl implements StateMachineDefinition<BookStatus, BookEvent> {
@@ -24,7 +20,7 @@ public class StateMachineDefinitionImpl implements StateMachineDefinition<BookSt
     @XmlElement(name = "transition", type = StateMachineStateImpl.class)
     private Collection<StateMachineState<BookStatus, BookEvent>> states;
     @XmlAttribute(name = "handler")
- //   @XmlJavaTypeAdapter(HandlerClassAdapter.class)
+    @XmlJavaTypeAdapter(HandlerClassAdapter.class)
     private Class<? extends StateMachineEventHandler> handlerClass;
 
     @Override

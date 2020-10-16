@@ -9,9 +9,6 @@ import com.epam.university.java.project.core.cdi.bean.BeanFactoryImpl;
 import com.epam.university.java.project.core.cdi.io.Resource;
 import java.util.Collection;
 
-/**
- * Author Dmitry Novikov 09-Oct-20.
- */
 public class ApplicationContextImpl implements ApplicationContext {
     private BeanDefinitionRegistry beanDefinitionRegistry;
     private BeanDefinitionReader beanDefinitionReader;
