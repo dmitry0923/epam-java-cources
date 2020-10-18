@@ -4,11 +4,10 @@ import com.epam.university.java.project.domain.Book;
 import com.epam.university.java.project.domain.BookImpl;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
 public class BookDaoXmlImpl implements BookDao {
-    private int lastBookId = 0;
-    private final List<Book> library = new ArrayList<>();
+    private final Collection<Book> collectionOfBooks = new ArrayList<>();
 
     @Override
     public Book createBook() {
@@ -17,28 +16,29 @@ public class BookDaoXmlImpl implements BookDao {
 
     @Override
     public Book getBook(int id) {
-        for (Book book : library) {
-            if (book.getId() == id) {
-                return book;
-            }
-        }
-        return null;
+        Optional<Book> book = collectionOfBooks.stream()
+                .filter(x -> x.getId() == id)
+                .findAny();
+        return book.orElse(null);
     }
 
     @Override
     public Collection<Book> getBooks() {
-        return library;
+        return collectionOfBooks;
     }
 
     @Override
     public void remove(Book book) {
-        library.remove(book);
+        if (getBook(book.getId()) != null) {
+            collectionOfBooks.remove(book);
+        } else {
+            throw new RuntimeException("No book found");
+        }
     }
 
     @Override
     public Book save(Book book) {
-        book.setId(++lastBookId);
-        library.add(book);
+        collectionOfBooks.add(book);
         return book;
     }
 }

@@ -8,15 +8,15 @@ public class BeanDefinitionRegistryImpl implements BeanDefinitionRegistry {
 
     @Override
     public void addBeanDefinition(BeanDefinition definition) {
-        registry.put(definition.getId().toLowerCase(), definition);
-        registry.put(definition.getClassName().toLowerCase(), definition);
-
-
+        registry.put(definition.getId(), definition);
         try {
             Class<?> clazz = Class.forName(definition.getClassName());
-            for (Class<?> hasInterface : clazz.getInterfaces()) {
-                if (hasInterface != null) {
-                    registry.put(hasInterface.getName().toLowerCase(), definition);
+            for (Class<?> classInterface : clazz.getInterfaces()) {
+                if (classInterface != null) {
+                    String tempName = classInterface.getSimpleName();
+                    String beanName = tempName.substring(0, 1)
+                            .toLowerCase() + tempName.substring(1);
+                    registry.put(beanName, definition);
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -26,6 +26,6 @@ public class BeanDefinitionRegistryImpl implements BeanDefinitionRegistry {
 
     @Override
     public BeanDefinition getBeanDefinition(String beanId) {
-        return registry.get(beanId.toLowerCase());
+        return registry.get(beanId);
     }
 }

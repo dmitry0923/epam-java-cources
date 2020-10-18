@@ -1,9 +1,5 @@
 package com.epam.university.java.project.core.cdi.context;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Demo bean. This bean assumed as parent.
  */

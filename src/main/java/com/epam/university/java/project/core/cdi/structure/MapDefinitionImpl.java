@@ -10,15 +10,15 @@ import java.util.Collection;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MapDefinitionImpl implements MapDefinition {
     @XmlElement(name = "entry", type = MapEntryDefinitionImpl.class)
-    private Collection<MapEntryDefinition> values;
+    private Collection<MapEntryDefinition> entries;
 
     @Override
-    public Collection<MapEntryDefinition> getValues() {
-        return values;
+    public Collection<MapEntryDefinition> getEntries() {
+        return entries;
     }
 
     @Override
-    public void setValues(Collection<MapEntryDefinition> values) {
-        this.values = values;
+    public void setEntries(Collection<MapEntryDefinition> entries) {
+        this.entries = entries;
     }
 }

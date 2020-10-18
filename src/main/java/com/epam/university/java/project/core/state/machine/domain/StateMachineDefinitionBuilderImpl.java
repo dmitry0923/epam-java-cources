@@ -5,8 +5,14 @@ import com.epam.university.java.project.domain.BookStatus;
 
 public class StateMachineDefinitionBuilderImpl
         implements StateMachineDefinitionBuilder<BookStatus, BookEvent> {
-    private final StateMachineDefinition<BookStatus, BookEvent> definition
-            = new StateMachineDefinitionImpl();
+
+    private final StateMachineDefinition<BookStatus, BookEvent> definition;
+    private final StateMachineState<BookStatus, BookEvent> state;
+
+    public StateMachineDefinitionBuilderImpl() {
+        this.definition = new StateMachineDefinitionImpl();
+        this.state = new StateMachineStateImpl();
+    }
 
     @Override
     public StateMachineDefinition<BookStatus, BookEvent> build() {
@@ -18,7 +24,6 @@ public class StateMachineDefinitionBuilderImpl
                                                                          BookStatus to,
                                                                          BookEvent on,
                                                                          String method) {
-        StateMachineState<BookStatus, BookEvent> state = new StateMachineStateImpl();
         state.setFrom(from);
         state.setTo(to);
         state.setOn(on);
@@ -31,7 +36,6 @@ public class StateMachineDefinitionBuilderImpl
     public StateMachineDefinitionBuilder<BookStatus, BookEvent> addState(BookStatus from,
                                                                          BookStatus to,
                                                                          BookEvent on) {
-        StateMachineState<BookStatus, BookEvent> state = new StateMachineStateImpl();
         state.setFrom(from);
         state.setTo(to);
         state.setOn(on);

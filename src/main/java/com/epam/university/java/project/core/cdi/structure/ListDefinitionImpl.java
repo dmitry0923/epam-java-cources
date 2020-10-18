@@ -10,15 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ListDefinitionImpl implements ListDefinition {
     @XmlElement(name = "value", type = ListItemDefinitionImpl.class)
-    private Collection<ListItemDefinition> items;
+    private Collection<ListItemDefinition> values;
 
     @Override
-    public Collection<ListItemDefinition> getItems() {
-        return items;
+    public Collection<ListItemDefinition> getValues() {
+        return values;
     }
 
     @Override
-    public void setItems(Collection<ListItemDefinition> items) {
-        this.items = items;
+    public void setValues(Collection<ListItemDefinition> values) {
+        this.values = values;
     }
+
 }

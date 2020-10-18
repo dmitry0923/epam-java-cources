@@ -12,28 +12,32 @@ import java.util.Collection;
 
 public class BookServiceImpl implements BookService {
     private BookDao bookDao;
-    private StateMachineManager stateMachineManager;
     private final Resource stateMachineDefinitionXml;
+    private StateMachineManager stateMachineManager;
 
     /**
-     * Java doc.
+     * Loading definition for BookStateMachine.
      */
     public BookServiceImpl() {
-        stateMachineDefinitionXml =
-                new XmlResource(getClass()
-                        .getResource("/project/DefaultBookStateMachineDefinition.xml")
-                        .getFile());
+        final String contextPath = getClass()
+                .getResource("/project/DefaultBookStateMachineDefinition.xml")
+                .getFile();
+        stateMachineDefinitionXml = new XmlResource(contextPath);
+        bookDao = new BookDaoXmlImpl();
     }
 
     @Override
     public Book createBook() {
         @SuppressWarnings("unchecked")
         StateMachineDefinition<BookStatus, BookEvent> definition
-                = (StateMachineDefinition<BookStatus, BookEvent>)
-                stateMachineManager.loadDefinition(stateMachineDefinitionXml);
+                = (StateMachineDefinition<BookStatus, BookEvent>) stateMachineManager
+                        .loadDefinition(stateMachineDefinitionXml);
+
         Book book = bookDao.createBook();
+
         stateMachineManager.handleEvent(stateMachineManager.initStateMachine(book, definition),
                 BookEvent.CREATE);
+
         return book;
     }
 

@@ -15,7 +15,12 @@ public class ApplicationContextImpl implements ApplicationContext {
     private BeanFactory beanFactory;
 
     /**
-     * Java doc.
+     * There are 3 dependencies for the constructor:
+     * 1) BeanDefinitionRegistry - the place to load beans.
+     * 2) BeanDefinitionReader - the tool to read beans from
+     *    XML and load into BeanDefinitionRegistry.
+     * 3) BeanFactory - to create objects based on the definitions in the BeanDefinitionRegistry,
+     *    where BeanDefinitionReader has loaded beans
      */
     public ApplicationContextImpl() {
         beanDefinitionRegistry = new BeanDefinitionRegistryImpl();

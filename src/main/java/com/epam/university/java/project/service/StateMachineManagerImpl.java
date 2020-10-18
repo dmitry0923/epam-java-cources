@@ -17,11 +17,11 @@ public class StateMachineManagerImpl implements StateMachineManager {
     @Override
     public StateMachineDefinition<?, ?> loadDefinition(Resource resource) {
         StateMachineDefinitionImpl definition = null;
-        File resourceFile = resource.getFile();
+        File file = resource.getFile();
         try {
             JAXBContext ctx = JAXBContext.newInstance(StateMachineDefinitionImpl.class);
             Unmarshaller unmarshaller = ctx.createUnmarshaller();
-            definition = (StateMachineDefinitionImpl) unmarshaller.unmarshal(resourceFile);
+            definition = (StateMachineDefinitionImpl) unmarshaller.unmarshal(file);
 
         } catch (JAXBException e) {
             e.printStackTrace();
