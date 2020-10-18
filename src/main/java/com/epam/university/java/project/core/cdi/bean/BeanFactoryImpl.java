@@ -11,15 +11,18 @@ import java.util.stream.Collectors;
 
 public class BeanFactoryImpl implements BeanFactory {
     private final BeanDefinitionRegistry beanDefinitionRegistry;
-    private final Map<BeanDefinition, Object> singletons = new HashMap<>();
+    private final Map<BeanDefinition, Object> collectionOfSingletons = new HashMap<>();
 
     public BeanFactoryImpl(BeanDefinitionRegistry beanDefinitionRegistry) {
         this.beanDefinitionRegistry = beanDefinitionRegistry;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> beanClass) {
-        return (T) getBean(beanClass.getName());
+        String tempName = beanClass.getSimpleName();
+        String beanName = tempName.substring(0, 1).toLowerCase() + tempName.substring(1);
+        return (T) getBean(beanName);
     }
 
     @Override
@@ -28,19 +31,22 @@ public class BeanFactoryImpl implements BeanFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getBean(String beanName, Class<T> beanClass) {
         return (T) getBean(beanName);
     }
 
     /**
-     * Java doc.
+     * Constructing classes based on its definitions.
      */
+    @SuppressWarnings("unchecked")
     public <T> T getBean(BeanDefinition definition) {
-        // if properties = null and scope is prototype
+        // if no properties and scope is "prototype"
         if (definition.getProperties() == null
-                && definition.getScope() != null && definition.getScope().equals("prototype")) {
-            T instance = null;
-            Class<T> clazz = null;
+                && definition.getScope() != null
+                && definition.getScope().equals("prototype")) {
+            T instance;
+            Class<T> clazz;
             try {
                 clazz = (Class<T>) Class.forName(definition.getClassName());
                 instance = clazz.getDeclaredConstructor().newInstance();
@@ -51,41 +57,54 @@ public class BeanFactoryImpl implements BeanFactory {
         }
 
         Predicate<String> isNullOrBlank = x -> x == null || x.isBlank();
+
+        // check for wrong properties if exist
         if (definition.getProperties() != null) {
             if (definition.getProperties().stream()
                     .anyMatch(n -> isNullOrBlank.test(n.getValue())
                             && isNullOrBlank.test(n.getRef())
                             && n.getData() == null)
             ) {
-                throw new RuntimeException();
+                System.err.println("Property doesn't have value,"
+                        + " ref or data (list or map)");
+                throw new RuntimeException("Property doesn't have value, "
+                        + "ref or data (list or map)");
             }
         }
 
         try {
             T instance;
             Class<T> clazz = (Class<T>) Class.forName(definition.getClassName());
+
+            // if no properties and no scope
             if (definition.getScope() == null
-                    && definition.getProperties() != null
-                    && definition.getProperties().size() < 2) { // here
+                    && definition.getProperties() == null) {
                 instance = clazz.getDeclaredConstructor().newInstance();
                 return instance;
             }
-            if (definition.getScope() != null && definition.getScope().equals("singleton")
-                    && singletons.containsKey(definition)) {
-                instance = (T) singletons.get(definition);
+
+            // if scope is "singleton" - take object from map or put into map
+            if (definition.getScope() != null
+                    && definition.getScope().equals("singleton")
+                    && collectionOfSingletons.containsKey(definition)) {
+                instance = (T) collectionOfSingletons.get(definition);
                 return instance;
             } else {
                 instance = clazz.getDeclaredConstructor().newInstance();
-                // here
+                // if no properties and no scope
                 if (definition.getProperties() == null
                         && definition.getScope() == null
-                        && definition.getPostConstruct() == null
                 ) {
                     return instance;
                 }
+                // if scope is "singleton"
                 if (definition.getScope() != null && definition.getScope().equals("singleton")) {
-                    singletons.put(definition, instance);
+                    collectionOfSingletons.put(definition, instance);
                 }
+            }
+            // if our singleton has no properties -> return it from map
+            if (definition.getProperties() == null) {
+                return (T) collectionOfSingletons.get(definition);
             }
 
             for (BeanPropertyDefinition property : definition.getProperties()) {
@@ -105,13 +124,14 @@ public class BeanFactoryImpl implements BeanFactory {
                     }
                 }
 
+                // if current property has no data, we move to the next property
                 if (property.getData() == null) {
                     continue;
                 }
 
                 if (property.getData() instanceof ListDefinition) {
                     ListDefinition listDefinition = (ListDefinition) property.getData();
-                    Collection<String> items = listDefinition.getItems()
+                    Collection<String> items = listDefinition.getValues()
                             .stream()
                             .map(ListDefinition.ListItemDefinition::getValue)
                             .collect(Collectors.toList());
@@ -122,15 +142,17 @@ public class BeanFactoryImpl implements BeanFactory {
                     MapDefinition mapDefinition = (MapDefinition) property.getData();
                     Map<String, Object> itemMap = new HashMap<>();
                     for (MapDefinition.MapEntryDefinition entryDefinition
-                            : mapDefinition.getValues()) {
+                            : mapDefinition.getEntries()) {
+                        // if there is value and ref in one property
                         if (!isNullOrBlank.test(entryDefinition.getValue())
                                 && !isNullOrBlank.test(entryDefinition.getRef())) {
-                            throw new RuntimeException();
+                            throw new RuntimeException("Key has to be associated either"
+                                    + " with value or ref");
                         }
+
                         if (!isNullOrBlank.test(entryDefinition.getValue())) {
                             itemMap.put(entryDefinition.getKey(), entryDefinition.getValue());
                         } else if (!isNullOrBlank.test(entryDefinition.getRef())) {
-                            // нет в реестре объекта dependentObject
                             Object dependency = getBean(entryDefinition.getRef());
                             itemMap.put(entryDefinition.getKey(), dependency);
                         }

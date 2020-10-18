@@ -1,6 +1,6 @@
 package com.epam.university.java.project.core.cdi.bean;
 
-import java.util.List;
+import java.util.Collection;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,13 +10,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BeansRoot {
     @XmlElement(name = "bean", type = BeanDefinitionImpl.class)
-    private List<BeanDefinition> lisOfBeans;
+    private Collection<BeanDefinition> collectionOfBeans;
 
-    public List<BeanDefinition> getLisOfBeans() {
-        return lisOfBeans;
+    public Collection<BeanDefinition> getCollectionOfBeans() {
+        return collectionOfBeans;
     }
 
-    public void setLisOfBeans(List<BeanDefinition> lisOfBeans) {
-        this.lisOfBeans = lisOfBeans;
+    public void setCollectionOfBeans(Collection<BeanDefinition> collectionOfBeans) {
+        this.collectionOfBeans = collectionOfBeans;
     }
 }

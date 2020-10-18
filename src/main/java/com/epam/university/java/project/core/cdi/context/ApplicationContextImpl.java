@@ -9,16 +9,18 @@ import com.epam.university.java.project.core.cdi.bean.BeanFactoryImpl;
 import com.epam.university.java.project.core.cdi.io.Resource;
 import java.util.Collection;
 
-/**
- * Author Dmitry Novikov 09-Oct-20.
- */
 public class ApplicationContextImpl implements ApplicationContext {
     private BeanDefinitionRegistry beanDefinitionRegistry;
     private BeanDefinitionReader beanDefinitionReader;
     private BeanFactory beanFactory;
 
     /**
-     * Java doc.
+     * There are 3 dependencies for the constructor:
+     * 1) BeanDefinitionRegistry - the place to load beans.
+     * 2) BeanDefinitionReader - the tool to read beans from
+     *    XML and load into BeanDefinitionRegistry.
+     * 3) BeanFactory - to create objects based on the definitions in the BeanDefinitionRegistry,
+     *    where BeanDefinitionReader has loaded beans
      */
     public ApplicationContextImpl() {
         beanDefinitionRegistry = new BeanDefinitionRegistryImpl();

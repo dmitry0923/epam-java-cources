@@ -36,7 +36,6 @@
         </property>
     </bean>
 
-    <bean id="dependentObject" class="com.epam.university.java.project.core.cdi.structure.ComplexObject">
+    <bean id="dependentObject" class="com.epam.university.java.project.core.cdi.structure.ComplexObject"/>
 
-    </bean>
 </beans>
