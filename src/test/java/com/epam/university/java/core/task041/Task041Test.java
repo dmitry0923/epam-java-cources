@@ -23,48 +23,48 @@ public class Task041Test {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCreateWithNullArguments() throws Exception {
+    public void testCreateWithNullArguments() {
         instance.create(null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testReadWithNullArguments() throws Exception {
+    public void testReadWithNullArguments() {
         instance.read(null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testUpdateWithNullArguments() throws Exception {
+    public void testUpdateWithNullArguments() {
         instance.update(null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDeleteWithNullArguments() throws Exception {
+    public void testDeleteWithNullArguments() {
         instance.delete(null, null);
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         Entity entity = instance.create(targetCollection, "Another Entity");
         assertEquals(entity.getId(), targetCollection.size() - 1);
     }
 
     @Test
-    public void testRead() throws Exception {
+    public void testRead() {
         Entity entity = instance.create(targetCollection, "First Entity");
         assertEquals(entity.getId(), instance.read(targetCollection, entity).getId());
     }
 
     @Test
-    public void testUpdate() throws Exception {
-        Entity entity = instance.create(targetCollection, "Another Entity");
-        int currentId = entity.getId();
-        instance.update(targetCollection, entity, "Changed Value");
-        List<Entity> current = new ArrayList<>(targetCollection);
-        assertEquals("Changed Value", current.get(currentId).getValue());
+    public void testUpdate() {
+        Entity entity = instance.create(targetCollection, "Another Entity"); // 2 Another Entity
+        int currentId = entity.getId(); // 2
+        instance.update(targetCollection, entity, "Changed Value"); // 2 Changed value
+        List<Entity> current = new ArrayList<>(targetCollection); //
+        assertEquals("Changed Value", current.get(currentId).getValue()); // 2 instead of 0
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         Collection<Entity> current = new ArrayList<>(targetCollection);
         Entity entity = instance.create(current, "Another Entity");
 
@@ -76,11 +76,9 @@ public class Task041Test {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testUpdateWithNoEntity() throws Exception {
+    public void testUpdateWithNoEntity() {
         Entity entity = instance.create(targetCollection, "Another Entity");
         instance.delete(targetCollection, entity);
         instance.update(targetCollection, entity, "Changed Value");
     }
-
-
 }
