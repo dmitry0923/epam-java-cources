@@ -3,80 +3,95 @@ package com.epam.university.java.core.task031;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Deque;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
-
-/**
- * Author Dmitry Novikov 10-Sep-20.
- */
 public class ServerImpl implements Server {
-    private final Deque<String> messages = new LinkedList<>();
+    private final List<Socket> connectedClients;
+    private final LinkedList<String> receivedMessages;
+    private final int port;
+    private final int maxConnections;
     private ServerSocket serverSocket;
-    private boolean isWorking;
+    private Socket clientSocket;
+    private BufferedReader in;
+    private final String domainName;
+    private InetAddress inetAddress;
 
     /**
-     * Read last received message.
-     *
-     * @return message text
+     * Implementing server with port, maxConnections and domain name.
      */
+    public ServerImpl(int port, int maxConnections, String domainName) {
+        this.port = port;
+        this.maxConnections = maxConnections;
+        this.domainName = domainName;
+        connectedClients = new ArrayList<>();
+        receivedMessages = new LinkedList<>();
+    }
+
     @Override
     public String readMessage() {
         try {
-            Thread.sleep(200);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (messages.size() == 0) {
-            return "";
-        }
-        return messages.poll();
-    }
-
-    /**
-     * Start chat server.
-     */
-    @Override
-    public void start() {
-        new Thread(() -> {
+        for (Socket socket : connectedClients) {
             try {
-                serverSocket = new ServerSocket(5000);
-                isWorking = true;
-                while (!serverSocket.isClosed()) {
-                    Socket client = serverSocket.accept();
-                    new Thread(() -> {
-                        try (BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(client.getInputStream()))) {
-                            while (isWorking) {
-                                if (reader.ready()) {
-                                    messages.push(reader.readLine());
-                                    System.out.println("Message received: " + messages.peek());
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }).start();
+                in = new BufferedReader(
+                        new InputStreamReader(socket.getInputStream()));
+                while (in.ready()) {
+                    String messageFromClient = in.readLine();
+                    receivedMessages.add(messageFromClient);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if (!receivedMessages.isEmpty()) {
+            return receivedMessages.pollLast();
+        }
+
+        return "";
+    }
+
+    @Override
+    public void start() {
+        try {
+            inetAddress = InetAddress.getByName(domainName);
+            serverSocket = new ServerSocket(port, maxConnections, inetAddress);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        new Thread(() -> {
+            while (!serverSocket.isClosed()) {
+                try {
+                    clientSocket = serverSocket.accept();
+                    connectedClients.add(clientSocket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }).start();
     }
 
-    /**
-     * Stop chat server.
-     */
     @Override
     public void stop() {
-        isWorking = false;
         try {
+            if (in != null) {
+                in.close();
+            }
+            if (!clientSocket.isClosed()) {
+                clientSocket.close();
+            }
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
-
