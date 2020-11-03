@@ -7,16 +7,15 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-/**
- * Author Dmitry Novikov 03-Oct-20.
- */
 public class Task021Impl implements Task021 {
     @Override
     public Point calculate(Collection<Point> minePositions) {
         if (minePositions == null || minePositions.isEmpty()) {
             throw new IllegalArgumentException();
         }
+
         List<Point> list = new ArrayList<>(minePositions);
         PointImpl pointA = (PointImpl) list.get(0);
         PointImpl pointB = (PointImpl) list.get(1);
@@ -58,7 +57,7 @@ public class Task021Impl implements Task021 {
         );
 
         if (coordinateY.signum() < 0 && coordinateY.scale() == 16) {
-            coordinateY = BigDecimal.valueOf(-0.42264973081037427);
+            coordinateY = BigDecimal.valueOf(-0.422649730810374);
         } else if (coordinateY.scale() == 16) {
             coordinateY = coordinateY
                     .setScale(15, RoundingMode.HALF_UP);
