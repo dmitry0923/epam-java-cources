@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-/**
- * Author Dmitry Novikov 23-Sep-20.
- */
 public class Task039Impl implements Task039 {
     Map<Character, String> result = new HashMap<>();
 
@@ -44,15 +41,25 @@ public class Task039Impl implements Task039 {
 
             HuffmanNode x = q.poll();
             HuffmanNode y = q.poll();
-            HuffmanNode f = new HuffmanNode();
-            f.data = x.data + y.data;
-            f.c = '-';
+            HuffmanNode newNode = new HuffmanNode();
+            newNode.data = x.data + y.data;
+            newNode.c = '-';
 
-            f.left = x;
-            f.right = y;
+            if (x.data == y.data) {
+                if (Character.compare(x.c, y.c) > 1) {
+                    newNode.left = x;
+                    newNode.right = y;
+                } else {
+                    newNode.left = y;
+                    newNode.right = x;
+                }
+            } else {
+                newNode.left = x;
+                newNode.right = y;
+            }
 
-            root = f;
-            q.add(f);
+            root = newNode;
+            q.add(newNode);
         }
 
         printCode(root, "");
@@ -74,6 +81,7 @@ public class Task039Impl implements Task039 {
         printCode(root.right, s + "1");
     }
 
+    //******************************************************************
     @Override
     public String getEncodedString(Map<Character, Integer> charFrequencies, String string) {
         Collection<Character> myCharacters = charFrequencies.keySet();
