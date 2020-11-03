@@ -20,31 +20,31 @@ public class Task052Impl implements Task052 {
         final int controlDigit = Integer.parseInt(split.get(split.size() - 1));
         split.remove(split.size() - 1);
         Collections.reverse(split);
-        ListIterator<String> iterator = split.listIterator();
+        List<Integer> resultCollection = new ArrayList<>();
 
-        while (iterator.hasNext()) {
-            String stringDigit = iterator.next();
-            int numericDigit = Integer.parseInt(stringDigit);
-            if (numericDigit % 2 != 0) {
-                numericDigit *= 2;
-                if (String.valueOf(numericDigit).length() > 1) {
-                    numericDigit = Integer.parseInt(String.valueOf(String
-                            .valueOf(numericDigit).charAt(0)))
+        for (int i = 0; i < split.size(); i++) {
+            int position = i + 1;
+            if (position % 2 != 0) {
+                Integer temp = Integer.parseInt(split.get(i)) * 2;
+                if (String.valueOf(temp).length() > 1) {
+                    temp = Integer.parseInt(String.valueOf(String
+                            .valueOf(temp).charAt(0)))
                             + Integer.parseInt(String.valueOf(String
-                            .valueOf(numericDigit).charAt(1)));
-                    iterator.remove();
-                    iterator.add(String.valueOf(numericDigit));
+                            .valueOf(temp).charAt(1)));
+                    resultCollection.add(temp);
+
                 } else {
-                    iterator.remove();
-                    iterator.add(String.valueOf(numericDigit));
+                    resultCollection.add(Integer.parseInt(split.get(i)) * 2);
                 }
+            } else {
+                resultCollection.add(Integer.parseInt(split.get(i)));
             }
         }
 
         int counter = 0;
-        for (String s : split
+        for (Integer integer : resultCollection
         ) {
-            counter += Integer.parseInt(s);
+            counter += integer;
         }
 
         String stringCounter = String.valueOf(counter);
