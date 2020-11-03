@@ -16,7 +16,7 @@ public class BookImpl implements Book {
 
     public BookImpl() {
         Random random = new Random();
-        this.id = random.nextInt(1000) + random.nextInt(1000);
+        this.id = 1 + random.nextInt(100);
     }
 
     @Override
