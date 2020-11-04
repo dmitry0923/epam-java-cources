@@ -17,6 +17,7 @@ public class Task054Test {
 
     /**
      * Instantiate class.
+     *
      * @throws Exception in case of Runtime Exceptions.
      */
     @Before
@@ -131,8 +132,8 @@ public class Task054Test {
         for (int i = 0; i < pixelValues.length; i++) {
             assertTrue("Color value can't be greater then 255",
                     (instance.getRed(pixelValues[i]) < 256
-                    && instance.getGreen(pixelValues[i]) < 256
-                    && instance.getBlue(pixelValues[i]) < 256));
+                            && instance.getGreen(pixelValues[i]) < 256
+                            && instance.getBlue(pixelValues[i]) < 256));
             assertEquals("Incorrect value of red",
                     redValues[i], instance.getRed(pixelValues[i]));
             assertEquals("Incorrect value of green",
