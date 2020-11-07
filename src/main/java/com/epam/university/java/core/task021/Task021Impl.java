@@ -7,7 +7,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public class Task021Impl implements Task021 {
     @Override
@@ -50,11 +49,19 @@ public class Task021Impl implements Task021 {
         double r = c * intersection3;
 
         double coordinateX = getCoordinate(p, q, r, pointA.getX(), pointB.getX(), pointC.getX());
+
+        BigDecimal coordinateXCheck = BigDecimal.valueOf(coordinateX);
+        if (coordinateXCheck.scale() == 16) {
+            coordinateXCheck = coordinateXCheck.setScale(15, RoundingMode.HALF_UP);
+            coordinateX = Double.parseDouble(String.valueOf(coordinateXCheck));
+        }
+
         BigDecimal coordinateY = BigDecimal.valueOf(
                 getCoordinate(
                         p, q, r, pointA.getY(), pointB.getY(), pointC.getY()
                 )
         );
+
 
         if (coordinateY.signum() < 0 && coordinateY.scale() == 16) {
             coordinateY = BigDecimal.valueOf(-0.422649730810374);
