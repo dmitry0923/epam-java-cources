@@ -9,7 +9,12 @@ public class Task053Impl implements Task053 {
             throw new IllegalArgumentException();
         }
 
+        if (!checkForEvenBraces(input)) {
+            throw new IllegalArgumentException();
+        }
+
         char[] intputChars = input.toCharArray();
+
         for (char c : intputChars
         ) {
             if (' ' == c || !checkForValidSymbolsAndDigit(c)) {
@@ -31,5 +36,27 @@ public class Task053Impl implements Task053 {
             }
         }
         return false;
+    }
+
+    private boolean checkForEvenBraces(String input) {
+        int counterOpen = 0;
+        int counterClose = 0;
+
+        final char[] chars = input.toCharArray();
+        for (char c : chars
+        ) {
+            if (c == '(') {
+                counterOpen++;
+            } else if (c == ')') {
+                counterClose++;
+            }
+        }
+
+        if (counterClose == counterOpen) {
+            return true;
+        }
+
+        return (counterOpen & 1) == 0
+                && (counterClose & 1) == 0;
     }
 }
