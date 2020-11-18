@@ -3,6 +3,7 @@ package com.epam.university.java.core.task031;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Optional;
 
 public class ClientImpl implements Client {
     private Socket clientSocket;
@@ -18,8 +19,10 @@ public class ClientImpl implements Client {
 
     @Override
     public void sendMessage(String message) {
-        if (message == null) {
-            nullMessage = true;
+        final Optional<String> receivedMessage = Optional.ofNullable(message);
+        if (receivedMessage.isEmpty()) {
+            this.nullMessage = true;
+            return;
         }
 
         try {
@@ -50,7 +53,6 @@ public class ClientImpl implements Client {
             if (nullMessage) {
                 throw new IllegalArgumentException();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
