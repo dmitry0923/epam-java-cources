@@ -3,15 +3,14 @@ package com.epam.university.java.core.task043;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Author Dmitry Novikov 19-Sep-20.
- */
 public class Task043Impl implements Task043 {
     private static Map<Character, String> mapForEncode = new HashMap<>();
     private static Map<String, Character> mapForDecode = new HashMap<>();
 
     /**
-     * Java doc comment.
+     * First of all we fill in the map for encoding and decoding
+     * with symbols. Then check if symbol exists in the map, if so,
+     * we get value.
      */
     public Task043Impl() {
 
@@ -42,6 +41,17 @@ public class Task043Impl implements Task043 {
         mapForEncode.put('y', "-.--");
         mapForEncode.put('z', "--..");
         mapForEncode.put(',', "--..--");
+        mapForEncode.put('0', "-----");
+        mapForEncode.put('1', ".----");
+        mapForEncode.put('2', "..---");
+        mapForEncode.put('3', "...--");
+        mapForEncode.put('4', "....-");
+        mapForEncode.put('5', ".....");
+        mapForEncode.put('6', "-....");
+        mapForEncode.put('7', "--...");
+        mapForEncode.put('8', "---..");
+        mapForEncode.put('9', "----.");
+
 
         mapForDecode.put(".-", 'a');
         mapForDecode.put("-...", 'b');
@@ -70,6 +80,16 @@ public class Task043Impl implements Task043 {
         mapForDecode.put("-.--", 'y');
         mapForDecode.put("--..", 'z');
         mapForDecode.put("--..--", ',');
+        mapForDecode.put("-----", '0');
+        mapForDecode.put(".----", '1');
+        mapForDecode.put("..---", '2');
+        mapForDecode.put("...--", '3');
+        mapForDecode.put("....-", '4');
+        mapForDecode.put(".....", '5');
+        mapForDecode.put("-....", '6');
+        mapForDecode.put("--...", '7');
+        mapForDecode.put("---..", '8');
+        mapForDecode.put("----.", '9');
     }
 
     @Override
@@ -82,14 +102,11 @@ public class Task043Impl implements Task043 {
 
         for (char c : sourceStringArray
         ) {
-            if (Character.isLetter(c)) {
+            if (mapForEncode.containsKey(Character.toLowerCase(c))) {
                 res.append(mapForEncode.get(Character.toLowerCase(c)));
                 res.append(" ");
             } else if (Character.isSpaceChar(c)) {
                 res.append(c);
-                res.append(" ");
-            } else if (c == ',') {
-                res.append("--..--");
                 res.append(" ");
             }
         }
