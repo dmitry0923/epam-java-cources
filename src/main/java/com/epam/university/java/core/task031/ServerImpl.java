@@ -86,10 +86,12 @@ public class ServerImpl implements Server {
             if (in != null) {
                 in.close();
             }
-            if (!clientSocket.isClosed()) {
+            if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();
             }
-            serverSocket.close();
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
