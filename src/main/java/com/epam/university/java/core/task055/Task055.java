@@ -1,5 +1,7 @@
 package com.epam.university.java.core.task055;
 
+import javax.xml.bind.JAXBException;
+
 /**
  * Read XML.
  * Implement a programme that get a data about Saint Petersburg residential buildings from
@@ -13,5 +15,5 @@ public interface Task055 {
      * @param path file to read.
      * @return ProcessingContext which will be perform processing to the file.
      */
-    ProcessingContext createContext(String path);
+    ProcessingContext createContext(String path) throws JAXBException;
 }
